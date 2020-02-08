@@ -1,12 +1,8 @@
 package com.georgecolgrove.test.testroscore;
 
-import android.content.Intent;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 
 import android.widget.TextView;
-import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -16,19 +12,13 @@ import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import org.ros.android.NodeMainExecutorService;
-import org.ros.exception.RosRuntimeException;
-import org.ros.internal.node.client.MasterClient;
-import org.ros.internal.node.xmlrpc.XmlRpcTimeoutException;
-import org.ros.namespace.GraphName;
+import org.ros.address.InetAddressFactory;
 import org.ros.node.DefaultNodeMainExecutor;
 import org.ros.node.NodeConfiguration;
 import org.ros.node.NodeMainExecutor;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Locale;
-import java.util.regex.Pattern;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -84,13 +74,16 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    private String getDefaultHostAddress() {
+        return InetAddressFactory.newNonLoopback().getHostAddress();
+    }
 
     public void connectToMaster(View view) {
         String uri = uriText.getText().toString();
         try {
             URI masterUri = new URI(uri);
 
-            NodeConfiguration configuration = NodeConfiguration.newPrivate(masterUri);
+            NodeConfiguration configuration = NodeConfiguration.newPublic(this.getDefaultHostAddress(), masterUri);
 
             nodeMainExecutor = DefaultNodeMainExecutor.newDefault();
             nodeMainExecutor.execute(new MyNode(), configuration);

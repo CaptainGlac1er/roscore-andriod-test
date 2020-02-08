@@ -8,28 +8,20 @@
     tools:context=".MainActivity"
     tools:showIn="@layout/activity_main">
 <RelativeLayout android:layout_width="match_parent" android:layout_height="match_parent">
-    <TextView
-            android:id="@+id/input_label"
-            android:layout_width="match_parent"
-            android:textAlignment="textStart"
-            android:gravity="start"
-            android:layout_height="wrap_content"
-            android:text="Enter Connection String Here"
-            app:layout_constraintTop_toTopOf="parent"
-            android:labelFor="@id/input_url"
-    />
     <EditText
             android:id="@+id/input_url"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/input_label"
             android:importantForAutofill="no"
-            android:inputType="textUri"/>
+            android:inputType="textUri"
+            android:hint="ROS Master URL and PORT"
+    />
     <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/input_url"
-            android:onClick="connectToMaster" tools:text="Connect"/>
+            android:onClick="connectToMaster"
+            android:text="Connect To ROS Master"/>
 </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
