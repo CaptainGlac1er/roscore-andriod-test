@@ -17,11 +17,17 @@
             android:hint="ROS Master URL and PORT"
     />
     <Button
+            android:id="@+id/connect"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/input_url"
             android:onClick="connectToMaster"
             android:text="Connect To ROS Master"/>
+    <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/nodes"
+            android:layout_below="@id/connect"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"/>
 </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

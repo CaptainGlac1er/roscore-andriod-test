@@ -3,6 +3,8 @@ package com.georgecolgrove.test.testroscore;
 import android.os.Bundle;
 
 import android.widget.TextView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -15,10 +17,11 @@ import android.view.MenuItem;
 import org.ros.address.InetAddressFactory;
 import org.ros.node.DefaultNodeMainExecutor;
 import org.ros.node.NodeConfiguration;
-import org.ros.node.NodeMainExecutor;
+import org.ros.node.NodeMain;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashMap;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -30,7 +33,15 @@ public class MainActivity extends AppCompatActivity {
     private static final int DEFAULT_PORT = 11311;
 
     private TextView uriText;
-    private NodeMainExecutor nodeMainExecutor;
+    protected HashMap<String, NodeMain> nodes;
+    private RecyclerView nodeList;
+    NodeCommander nodeCommander;
+
+    public MainActivity() {
+        super();
+        nodes = new HashMap<>();
+        nodeCommander = new NodeCommander(DefaultNodeMainExecutor.newDefault());
+    }
 
 
     @Override
@@ -40,6 +51,15 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         uriText = findViewById(R.id.input_url);
+        nodeList = findViewById(R.id.nodes);
+
+        // Add Nodes here
+        nodes.put("/chatter", new MyNode());
+
+
+        MyAdapter myAdapter = new MyAdapter(this, nodes, nodeCommander);
+        nodeList.setAdapter(myAdapter);
+        nodeList.setLayoutManager(new LinearLayoutManager(this));
 
 
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -81,12 +101,7 @@ public class MainActivity extends AppCompatActivity {
     public void connectToMaster(View view) {
         String uri = uriText.getText().toString();
         try {
-            URI masterUri = new URI(uri);
-
-            NodeConfiguration configuration = NodeConfiguration.newPublic(this.getDefaultHostAddress(), masterUri);
-
-            nodeMainExecutor = DefaultNodeMainExecutor.newDefault();
-            nodeMainExecutor.execute(new MyNode(), configuration);
+            nodeCommander.addConfiguration(NodeConfiguration.newPublic(this.getDefaultHostAddress(), new URI(uri)));
         } catch (URISyntaxException uriSyntaxException) {
             System.out.println(uriSyntaxException.toString());
         }
