@@ -2,6 +2,7 @@ package com.georgecolgrove.test.testroscore;
 
 import android.os.Bundle;
 
+import android.view.*;
 import android.widget.TextView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -11,9 +12,6 @@ import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
 import org.ros.address.InetAddressFactory;
 import org.ros.node.DefaultNodeMainExecutor;
 import org.ros.node.NodeConfiguration;
@@ -53,8 +51,12 @@ public class MainActivity extends AppCompatActivity {
         uriText = findViewById(R.id.input_url);
         nodeList = findViewById(R.id.nodes);
 
+        // View to apply Snackbar to
+        View view = findViewById(R.id.connect);
+
         // Add Nodes here
-        nodes.put("/chatter", new MyNode());
+        nodes.put("/chatter Publisher", new MyNode());
+        nodes.put("/chatter Listener", new MyListenerNode(view));
 
 
         MyAdapter myAdapter = new MyAdapter(this, nodes, nodeCommander);
