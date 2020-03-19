@@ -23,7 +23,7 @@ public class MyListenerNode implements NodeMain {
 
     @Override
     public GraphName getDefaultNodeName() {
-        return GraphName.of("test_app/talker");
+        return GraphName.of("test_app/talker/sub");
     }
 
     @Override
