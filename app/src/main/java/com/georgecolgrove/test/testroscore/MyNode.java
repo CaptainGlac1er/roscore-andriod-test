@@ -11,7 +11,7 @@ import org.ros.node.topic.Publisher;
 public class MyNode implements NodeMain {
     @Override
     public GraphName getDefaultNodeName() {
-        return GraphName.of("test_app/talker");
+        return GraphName.of("test_app/talker/pub");
     }
 
     @Override
